@@ -44,17 +44,25 @@ module.exports = function (io) {
 
     socket.on("updateField", async ({ formId, fieldId, updates }) => {
       try {
+        logger.info("Updating field");
         const form = await Form.findById(formId);
         if (!form) {
+          logger.error("Form not found");
           return socket.emit("error", "Form not found");
         }
+        logger.info("Form found");
+
+        logger.info("Updating form field");
         const formField = await FormField.findByIdAndUpdate(fieldId, updates, {
           new: true,
         });
         if (!formField) {
+          logger.error("Form field not found");
           return socket.emit("error", "Form field not found");
         }
+        logger.info("Form field updated");
         io.emit("fieldUpdated", { formId, fieldId, updates });
+
       } catch (error) {
         logger.error(`Error updating field: ${error.message}`);
         socket.emit("error", error.message);
