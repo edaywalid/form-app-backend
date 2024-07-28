@@ -8,7 +8,7 @@ const socketIo = require("socket.io");
 const socketHandler = require("./websockets/socketHandler");
 const cors = require("cors");
 const app = express();
-const port = 10000;
+const port = 3000 || process.env.PORT;
 
 require("dotenv").config();
 
